@@ -1,28 +1,29 @@
 <!DOCTYPE html>
  <html>
  <head>
- 	<title>Money</title>
+    <title>Money</title>
     <meta charset="utf-8">
- 	<link rel="stylesheet" type="text/css" href="style.css"/>
+    <link rel="stylesheet" type="text/css" href="style.css"/>
  </head>
  <body>
- 	<img id="note" src="images/note_small_bw.jpg" width="400" height="183" alt="note">
- 	<div id="infos"><div id="chapter">D A S&nbsp;&nbsp;&nbsp;G E L D</div><div id="cash">0.-&nbsp; C H F</div></div>
+    <img id="note" src="images/note_small_bw.jpg" width="400" height="183" alt="note">
+    <div id="infos"><div id="chapter">D A S&nbsp;&nbsp;&nbsp;G E L D</div><div id="cash">0.-&nbsp; C H F</div></div>
     <div id="moneytext">WIE VIEL<BR/>SIND<BR/>53'000'000<BR/>CHF ?</div>
     <img id="dot" src="images/touchIcon.png" alt="dot">
     <canvas id="c" width="1024" height="678"></canvas>
- 	<script type="text/javascript">
- 		var canvas = document.getElementById("c");
+    <script type="text/javascript">
+        var canvas = document.getElementById("c");
         var dot = document.getElementById("dot");
- 		var ctx = canvas.getContext("2d");
- 		var img = document.getElementById("note");
- 		var mouseDown = false;
- 		var infos = document.getElementById("cash");
+        var ctx = canvas.getContext("2d");
+        var img = document.getElementById("note");
+        var mouseDown = false;
+        var infos = document.getElementById("infos");
+        var cash = document.getElementById("cash");
         var firstTouchDone = false;
         var touchIcon = new Image;
         touchIcon.src = "images/touchIcon.png";
- 		var moneyCounter = 0;
- 		var rotation = 0;
+        var moneyCounter = 0;
+        var rotation = 0;
 
         document.addEventListener('DOMContentLoaded', function() { 
             resizeCanvas();
@@ -33,27 +34,26 @@
         }); 
 
         function resizeCanvas() {
-            canvas.width  = window.innerWidth;
+            infos.width  = window.innerWidth;
+            canvas.width  = window.innerWidth;  
             canvas.height = window.innerHeight;
-            canvasIntro.width  = window.innerWidth;
-            canvasIntro.height = window.innerHeight;
-            printQuestion();
         }
         
         function writeMessage(message) {
-	        ctx.clearRect(0, 0, 100, 200);
-	        ctx.font = '18pt Helvetica';
-	        ctx.fillStyle = 'black';
-	        ctx.fillText(message, 10, 25);
-      	}
+            ctx.clearRect(0, 0, 100, 200);
+            ctx.font = '18pt Helvetica';
+            ctx.fillStyle = 'black';
+            ctx.fillText(message, 10, 25);
+        }
 
         canvas.addEventListener('touchstart', function(evt) {
             touched(evt);
         }, false);
 
-	    canvas.addEventListener('touchmove', function(evt) {
+        canvas.addEventListener('touchmove', function(evt) {
+            evt.preventDefault();
             touched(evt);
-      	}, false);
+        }, false);
         canvas.addEventListener('mousemove', function(evt) {
             var x = Math.round(evt.screenX);
             var y = Math.round(evt.screenY);
@@ -68,7 +68,7 @@
                 touch = evt.touches.item(i);
                 var x = Math.round(touch.pageX);
                 var y = Math.round(touch.pageY);
-                drawNote(xPos,yPos);
+                drawNote(x,y);
             }
         }
 
@@ -84,7 +84,7 @@
                 rotation = rotation +0.1;
                 ctx.rotate(rotation);
                 ctx.drawImage(img,- img.width/2,- img.height/2,400,183);
-                infos.innerHTML = formatNumber(moneyCounter)+".-&nbsp; C H F";
+                cash.innerHTML = formatNumber(moneyCounter)+".-&nbsp; C H F";
                 ctx.restore();    
         }
 
@@ -93,6 +93,6 @@
         }
 
 
- 	</script>
+    </script>
  </body>
  </html>
