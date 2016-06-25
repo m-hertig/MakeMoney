@@ -1,11 +1,11 @@
 @font-face {
     font-family: 'unicash-roman';
-    src: url('unica_webfont/unicash-roman-webfont.eot');
-    src: url('unica_webfont/unicash-roman-webfont.eot?#iefix') format('embedded-opentype'),
-         url('unica_webfont/unicash-roman-webfont.woff2') format('woff2'),
-         url('unica_webfont/unicash-roman-webfont.woff') format('woff'),
-         url('unica_webfont/unicash-roman-webfont.ttf') format('truetype'),
-         url('unica_webfont/unicash-roman-webfont.svg#unicash-romanregular') format('svg');
+    src: url('fonts/unica_webfont/unicash-roman-webfont.eot');
+    src: url('fonts/unica_webfont/unicash-roman-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/unica_webfont/unicash-roman-webfont.woff2') format('woff2'),
+         url('fonts/unica_webfont/unicash-roman-webfont.woff') format('woff'),
+         url('fonts/unica_webfont/unicash-roman-webfont.ttf') format('truetype'),
+         url('fonts/unica_webfont/unicash-roman-webfont.svg#unicash-romanregular') format('svg');
     font-weight: normal;
     font-style: normal;
 
@@ -13,18 +13,47 @@
 
 @font-face {
     font-family: 'unicash-bolditalic';
-    src: url('unicaBoldItalic/unicash-bolditalic-webfont.eot');
-    src: url('unicaBoldItalic/unicash-bolditalic-webfont.eot?#iefix') format('embedded-opentype'),
-         url('unicaBoldItalic/unicash-bolditalic-webfont.woff2') format('woff2'),
-         url('unicaBoldItalic/unicash-bolditalic-webfont.woff') format('woff'),
-         url('unicaBoldItalic/unicash-bolditalic-webfont.ttf') format('truetype'),
-         url('unicaBoldItalic/unicash-bolditalic-webfont.svg#unicash-bolditalicregular') format('svg');
+    src: url('fonts/unicaBoldItalic/unicash-bolditalic-webfont.eot');
+    src: url('fonts/unicaBoldItalic/unicash-bolditalic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/unicaBoldItalic/unicash-bolditalic-webfont.woff2') format('woff2'),
+         url('fonts/unicaBoldItalic/unicash-bolditalic-webfont.woff') format('woff'),
+         url('fonts/unicaBoldItalic/unicash-bolditalic-webfont.ttf') format('truetype'),
+         url('fonts/unicaBoldItalic/unicash-bolditalic-webfont.svg#unicash-bolditalicregular') format('svg');
     font-weight: normal;
     font-style: normal;
 
 }
 
+html,
+body {
+	width: 1024px;
+	height: 723px;
+	margin: 0;
+	padding: 0;
+	overflow: hidden !important;
+}
+
+#moneytext {
+	position: absolute;
+	top: 65px;
+	left: 45px;
+	line-height: 160px;
+	letter-spacing: 5px;
+	font-family: "unicash-bolditalic";
+	font-size: 150px;
+	max-width: 100%;
+}
+
+#dot {
+	position: fixed;
+	left: 50%; 
+	top: 38%;
+	margin-left: -50px;
+}
+
 #c {
+	margin: 45px 0 0 0;
+	padding: 0;
 	position: absolute;
 	left: 0;
 	right: 0;
@@ -46,8 +75,9 @@
 }
 
 #question {
-	width: 100%;
-	height: 100%;
+	width: 1024px;
+	height: 768px;
+	max-width: 100%;
 	margin-top: 60px;
 	position: absolute;
 	font-size: 150px;

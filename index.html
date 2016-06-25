@@ -2,65 +2,44 @@
  <html>
  <head>
  	<title>Money</title>
+    <meta charset="utf-8">
  	<link rel="stylesheet" type="text/css" href="style.css"/>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="../jquery.fullPage.js"></script>
-    <script type="text/javascript" src="examples.js"></script>
-
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#fullpage').fullpage({
-                verticalCentered: true,
-                sectionsColor: ['#1bbc9b', '#4BBFC3', '#7BAABE'],
-                afterRender: function(){
-                }
-            });
-        });
-    </script>
  </head>
  <body>
- 	<img id="note" src="note_small_bw.jpg" width="400" height="183" alt="note">
- 	<div id="infos"><div id="chapter">I D O&nbsp;&nbsp;&nbsp;W E B S I T E S</div><div id="cash">0 .-&nbsp; C H F</div></div>
-    <div id="fullpage">
-    <div class="section " id="section0">
-            <canvas id="c" width="1024" height="768" onload="drawNote()"></canvas>
-            <canvas id="cIntro" width="1024" height="768" onload="drawNote()"></canvas>
-            <div class="layer">
-                <h1>fullPage.js videos</h1>
-            </div>
-        </div>
-        <div class="section" id="section1">
-            <div class="slide" id="slide1"><h1>Slide Backgrounds</h1></div>
-            <div class="slide" id="slide2"><h1>Totally customizable</h1></div>
-        </div>
-        <div class="section" id="section2"><h1>Lovely images <br />for a lovely page</h1></div>
-        <div class="section" id="section3"><h1>One Image = One thousand words</h1></div>
-    </div>
+ 	<img id="note" src="images/note_small_bw.jpg" width="400" height="183" alt="note">
+ 	<div id="infos"><div id="chapter">D A S&nbsp;&nbsp;&nbsp;G E L D</div><div id="cash">0.-&nbsp; C H F</div></div>
+    <div id="moneytext">WIE VIEL<BR/>SIND<BR/>53'000'000<BR/>CHF ?</div>
+    <img id="dot" src="images/touchIcon.png" alt="dot">
+    <canvas id="c" width="1024" height="678"></canvas>
  	<script type="text/javascript">
  		var canvas = document.getElementById("c");
-        var canvasIntro = document.getElementById("cIntro");
-        canvas.width  = window.innerWidth;
-        canvas.height = window.innerHeight;
-        canvasIntro.width  = window.innerWidth;
-        canvasIntro.height = window.innerHeight;
-        var ctxIntro = canvasIntro.getContext("2d");
+        var dot = document.getElementById("dot");
  		var ctx = canvas.getContext("2d");
  		var img = document.getElementById("note");
  		var mouseDown = false;
  		var infos = document.getElementById("cash");
+        var firstTouchDone = false;
+        var touchIcon = new Image;
+        touchIcon.src = "images/touchIcon.png";
  		var moneyCounter = 0;
  		var rotation = 0;
-        var posIntroText = 4000;
-        var introTextInterval;
-        var introText = "+++ IDO WEBSITES +++";
-        var introTextSpaced = introText.split("").join(String.fromCharCode(8202))
 
         document.addEventListener('DOMContentLoaded', function() { 
-            introTextInterval = setInterval(function () {runTextLeftToRight(ctxIntro,canvasIntro.w,canvasIntro.h)}, 10);
-            setTimeout(function(){clearIntro()},3400);
+            resizeCanvas();
         }, false);
 
+        window.addEventListener("resize", function() {
+            resizeCanvas();
+        }); 
+
+        function resizeCanvas() {
+            canvas.width  = window.innerWidth;
+            canvas.height = window.innerHeight;
+            canvasIntro.width  = window.innerWidth;
+            canvasIntro.height = window.innerHeight;
+            printQuestion();
+        }
+        
         function writeMessage(message) {
 	        ctx.clearRect(0, 0, 100, 200);
 	        ctx.font = '18pt Helvetica';
@@ -68,97 +47,52 @@
 	        ctx.fillText(message, 10, 25);
       	}
 
-      	function getMousePos(canvas, evt) {
-	        var rect = canvas.getBoundingClientRect();
-	        return {
-	          x: evt.clientX - rect.left,
-	          y: evt.clientY - rect.top
-	        };
-	      }
-
-        canvas.onmousedown = function(event){
-        	 mouseDown = true;
-        };
-
-        canvas.onmouseup = function(event){
-        	 mouseDown = false;
-        };
-
-
+        canvas.addEventListener('touchstart', function(evt) {
+            touched(evt);
+        }, false);
 
 	    canvas.addEventListener('touchmove', function(evt) {
-            touchesCount = Math.min(1, evt.touches.length);
-           for (var i=0;i<touchesCount;i++) {
-                touch = evt.touches.item(i);
-	    		var x = Math.round(touch.pageX);
-            	var y = Math.round(touch.pageY);
-            	moneyCounter = moneyCounter + 100;
-            	ctx.save();
-            	ctx.translate(x,y);
-            	rotation = rotation +0.1;
-            	ctx.rotate(rotation);
-            	ctx.drawImage(img,- img.width/2,- img.height/2,400,183);
-            	infos.innerHTML = moneyCounter+".-&nbsp; C H F";
-            	ctx.restore();
-            }
+            touched(evt);
       	}, false);
-
         canvas.addEventListener('mousemove', function(evt) {
             var x = Math.round(evt.screenX);
             var y = Math.round(evt.screenY);
-            moneyCounter = moneyCounter + 100;
-            ctx.save();
-            ctx.translate(x,y);
-            rotation = rotation +0.1;
-            ctx.rotate(rotation);
-            ctx.drawImage(img,- img.width/2,- img.height/2,400,183);
-            infos.innerHTML = moneyCounter+".-&nbsp; C H F";
-            ctx.restore();
+            drawNote(x,y);
         }, false);
 
-        function drawNote() {
-                        //Secify the offset and color of the shadow
-            // ctx.shadowOffsetX = 1;
-            // ctx.shadowOffsetY = 1;
-            // ctx.shadowColor = '#999999';
-            // ctx.shadowBlur = 10;
-            ctx.drawImage(img,100,100,400,183);
+        function touched(evt) {
+            touchesCount = Math.min(1, evt.touches.length);
+
+            //Secify the offset and color of the shadow
+            for (var i=0;i<touchesCount;i++) {
+                touch = evt.touches.item(i);
+                var x = Math.round(touch.pageX);
+                var y = Math.round(touch.pageY);
+                drawNote(xPos,yPos);
+            }
         }
 
-        function runTextLeftToRight(ctx,w,h) {
-            if (posIntroText>-5300) {
-                posIntroText = posIntroText-20;
-            } else {
-                posIntroText = 1000;
-            } 
-            ctx.clearRect(0,0,canvas.width,canvas.height);
-            ctx.save();
-            ctx.shadowOffsetX = 0;
-            ctx.shadowOffsetY = 0;
-            ctx.shadowBlur = 0;
-            ctx.fillStyle = "red";
-            ctx.fillRect(0,0,canvas.width,canvas.height);
-            ctx.translate(posIntroText, 0);
-            ctx.font = "250px unicash-bolditalic";
-            var textWidth = 6000;
-            // ctx.fillStyle = "red";
-            // ctx.fillRect(-textWidth,0,textWidth*1.43,canvas.height);
-            //ctx.fillRect(0,0,2600,canvas.height);
-            ctx.fillStyle = "white";
-            ctx.translate(0,375);
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-            ctx.fillText(introTextSpaced, 0, 0);
-            ctx.restore();
-        //var t = setTimeout('RunTextLeftToRight()', delay);
+        function drawNote(xPos,yPos) {
+                if(firstTouchDone==false) {
+                    firstTouchDone = true;
+                    dot.style.display = "none";
+                    //ctx.clearRect(0,0,canvas.width,canvas.height);
+                }
+                moneyCounter = moneyCounter + 100;
+                ctx.save();
+                ctx.translate(xPos,yPos);
+                rotation = rotation +0.1;
+                ctx.rotate(rotation);
+                ctx.drawImage(img,- img.width/2,- img.height/2,400,183);
+                infos.innerHTML = formatNumber(moneyCounter)+".-&nbsp; C H F";
+                ctx.restore();    
         }
 
-        function clearIntro () {
-            clearTimeout(introTextInterval);
-            ctx.fillStyle = "white";
-            ctx.fillRect(0,0,canvas.width,canvas.height);
-            canvasIntro.style.display = "none";
+        function formatNumber(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'");
         }
+
+
  	</script>
  </body>
  </html>
